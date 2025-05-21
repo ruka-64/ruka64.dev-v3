@@ -9,7 +9,9 @@
     "astro": "astro"
   },
   "dependencies": {
-    "astro": "^5.7.13"
+    "@tailwindcss/vite": "^4.1.7",
+    "astro": "^5.7.13",
+    "tailwindcss": "^4.1.7"
   },
   "devDependencies": {
     "prettier-plugin-astro": "^0.14.1"
