@@ -1,7 +1,21 @@
 ---
+import Image from 'astro/components/Image.astro';
 import Layout from '../layouts/Layout.astro';
+
+import Avatar from '../assets/avatar.jpg';
 ---
 
 <Layout title='Home' description='s'>
-	<h1>a</h1>
+	<div class='flex flex-col items-center'>
+		<div class='flex items-center m-8'>
+			<div class='mr-8'>
+				<h1 class='text-6xl'>ruka64 (aka r64)</h1>
+				<h2 class='text-3xl'>Web Developer / Privacy Researcher</h2>
+			</div>
+			<div class='w-64'>
+				<Image src={Avatar} alt='my avatar' class='rounded-full' />
+			</div>
+		</div>
+		<h1>title</h1>
+	</div>
 </Layout>

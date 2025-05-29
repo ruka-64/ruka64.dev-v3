@@ -1,1 +1,26 @@
 @import "tailwindcss";
+
+@theme {
+	--font-display: "Orbitron", sans-serif;
+}
+
+@font-face {
+	font-family: "Orbitron";
+	font-style: normal;
+	font-optical-sizing: auto;
+	font-weight: 400;
+	font-display: swap;
+	src: url("/fonts/Orbitron-Regular.woff") format("woff");
+}
+
+@layer base {
+	h1 {
+		font-size: var(--text-3xl);
+	}
+	h2 {
+		font-size: var(--text-2xl);
+	}
+	h3 {
+		font-size: var(--text-xl);
+	}
+}
