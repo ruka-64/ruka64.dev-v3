@@ -3,19 +3,65 @@ import Image from 'astro/components/Image.astro';
 import Layout from '../layouts/Layout.astro';
 
 import Avatar from '../assets/avatar.jpg';
+import { Cards } from '../components/Cards';
+
+const Contacts = {
+	Discord: 'https://discord.com/users/760731506448138251',
+	SimpleX:
+		'https://simplex.chat/contact#/?v=2-7&smp=smp%3A%2F%2FPtsqghzQKU83kYTlQ1VKg996dW4Cw4x_bvpKmiv8uns%3D%40smp18.simplex.im%2FiFx22mm1h3sEb8rg6X66wU2FnLQ5OCqj%23%2F%3Fv%3D1-4%26dh%3DMCowBQYDK2VuAyEAvbXHeh6uyD7XVUP46b7u3T5x1lIg-Hxlh-SVS5YSKAY%3D%26q%3Dc%26srv%3Dlyqpnwbs2zqfr45jqkncwpywpbtq7jrhxnib5qddtr6npjyezuwd3nqd.onion',
+	Session: '0574a68a17ef3e2bf9f941eebb7233dec05741fa21ec7408c59b0c21d8b261d041',
+	Zenn: 'https://zenn.dev/r64',
+	Github: 'https://github.com/ruka-64',
+};
 ---
 
 <Layout title='Home' description='s'>
 	<div class='flex flex-col items-center'>
-		<div class='flex items-center m-8'>
-			<div class='mr-8'>
-				<h1 class='text-6xl'>ruka64 (aka r64)</h1>
-				<h2 class='text-3xl'>Web Developer / Privacy Researcher</h2>
+		<div class='flex flex-col-reverse md:flex-row items-center m-8'>
+			<div class='text-center mt-4 md:mt-0 md:mr-8 md:text-left'>
+				<h1 class='text-xl md:text-3xl xl:text-5xl'>ruka64 (aka r64)</h1>
+				<h2 class='text-xs md:text-xl xl:text-3xl'>
+					Web Developer / Privacy Researcher
+				</h2>
 			</div>
-			<div class='w-64'>
+			<div class='w-32 md:w-64'>
 				<Image src={Avatar} alt='my avatar' class='rounded-full' />
 			</div>
 		</div>
-		<h1>title</h1>
+		<h1>Contacts</h1>
+		<div
+			class='flex mt-4 gap-y-4 gap-x-2 flex-wrap justify-center flex-col md:flex-row'
+		>
+			<Cards
+				icon='simple-icons:discord'
+				name='ruka64___'
+				href={Contacts.Discord}
+				client:visible
+			/>
+			<Cards
+				icon='simple-icons:simplex'
+				name='Click to jump'
+				href={Contacts.SimpleX}
+				client:visible
+			/>
+			<Cards
+				icon='simple-icons:session'
+				name={Contacts.Session.slice(0, 8) + '...'}
+				clip={Contacts.Session}
+				client:visible
+			/>
+			<Cards
+				icon='simple-icons:zenn'
+				name='r64'
+				href={Contacts.Zenn}
+				client:visible
+			/>
+			<Cards
+				icon='simple-icons:github'
+				name='ruka-64'
+				href={Contacts.Github}
+				client:visible
+			/>
+		</div>
 	</div>
 </Layout>
