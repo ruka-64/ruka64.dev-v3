@@ -18,6 +18,9 @@ const { title, description } = Astro.props;
 		<meta name='description' content={description} />
 		<meta name='theme-color' content='#3ea9fb' />
 		<link rel='icon' href='/favicon.ico' />
+		<noscript>
+			<link rel='stylesheet' href='/noscript.css' />
+		</noscript>
 		<title>{title} | ruka64.dev</title>
 	</head>
 	<body class='m-0'>
