@@ -162,11 +162,27 @@ export function Discord() {
 		} else setHasactivity(false);
 		// function setRPC(timestamp);
 	}
-	setInterval(() => {
-		// console.log("Calling from interval", rpc_Start, rpc_End);
-		// console.log("stateval", a_time);
+	//thanks https://zenn.dev/kakaka/articles/41f22d2dcc9720
+	const useIntervalBy1s = (callback: () => void) => {
+		const callbackRef = useRef<() => void>(callback);
+		useEffect(() => {
+			callbackRef.current = callback; // 新しいcallbackをrefに格納！
+		}, [callback]);
+
+		useEffect(() => {
+			const tick = () => {
+				callbackRef.current();
+			};
+			const id = setInterval(tick, 1000);
+			return () => {
+				clearInterval(id);
+			};
+		}, []); //refはミュータブルなので依存配列に含めなくてもよい
+	};
+	useIntervalBy1s(() => {
+		console.log("calling");
 		calcRpc_Timestamp(rpc_Start, rpc_End);
-	}, 1000);
+	});
 	function calcRpc_Timestamp(start: number | null, end: number | null) {
 		if (isSpotify) {
 			a_setTime(null);
@@ -219,7 +235,7 @@ export function Discord() {
 	return (
 		<>
 			{avatar ? (
-				<div className="flex flex-col gap-4 border border-gray-700 p-4 rounded-lg font-sans">
+				<div className="flex flex-col gap-4 border border-gray-700 p-4 rounded-lg font-sans mx-4">
 					<div className="flex items-center space-x-4">
 						<div className="shrink-0 relative">
 							{avatar && (
@@ -244,7 +260,7 @@ export function Discord() {
 					{hasActivity ? (
 						<div className="border rounded-lg border-gray-400 backdrop-blur-3xl p-6 flex flex-col box-border">
 							<div className="flex space-x-4 items-center">
-								<div className="shrink-0 relative">
+								<div className="shrink-0">
 									<img
 										src={a_large ?? "/fallback.jpg"}
 										width="128"
@@ -272,14 +288,13 @@ export function Discord() {
 										</h1>
 									)}
 									{a_details && (
-										<h2 className="leading-tight line-clamp-2 text-xl">
-											{isSpotify ? "by " : ""}
+										<h2 className="leading-tight line-clamp-2 text-xl truncate w-auto">
 											{a_details}
 										</h2>
 									)}
 									{a_state && (
-										<h2 className="leading-tight line-clamp-2 text-lg">
-											{isSpotify ? "on " : ""}
+										<h2 className="leading-tight line-clamp-2 text-lg truncate w-auto">
+											{isSpotify ? "by " : ""}
 											{a_state}
 										</h2>
 									)}

@@ -1,4 +1,4 @@
-import { useState, type FC } from "react";
+import { useEffect, useRef, useState, type FC } from "react";
 
 interface ProgressProps {
 	start: number;
@@ -39,10 +39,28 @@ export const Progress: FC<ProgressProps> = ({ start, end }) => {
 	const style = {
 		width,
 	};
-	setInterval(() => {
+	//thanks https://zenn.dev/kakaka/articles/41f22d2dcc9720
+	const useIntervalBy1s = (callback: () => void) => {
+		const callbackRef = useRef<() => void>(callback);
+		useEffect(() => {
+			callbackRef.current = callback; // 新しいcallbackをrefに格納！
+		}, [callback]);
+
+		useEffect(() => {
+			const tick = () => {
+				callbackRef.current();
+			};
+			const id = setInterval(tick, 1000);
+			return () => {
+				clearInterval(id);
+			};
+		}, []); //refはミュータブルなので依存配列に含めなくてもよい
+	};
+	useIntervalBy1s(() => {
+		console.log("progress calculating");
 		setElapsed(getElapsed());
 		setWidth(calcWidth());
-	}, 1000);
+	});
 	return (
 		<div>
 			<div className="rounded-lg bg-gray-200/20 h-2">
