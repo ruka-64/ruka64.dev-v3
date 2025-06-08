@@ -80,7 +80,7 @@ export function Discord() {
 			const onMessage = (ev: MessageEvent<string>) => {
 				const { t, d } = JSON.parse(ev.data);
 				if (t !== "INIT_STATE" && t !== "PRESENCE_UPDATE") return;
-				// console.log(t, d);
+				console.log(t, d);
 				updateRPC(d);
 			};
 			ws.onopen = () => {
@@ -135,27 +135,31 @@ export function Discord() {
 		});
 		const a = activities[0];
 		setIsSpotify(listening_to_spotify);
-		if (a.type === 2) {
-			const l_url = getImage(a.assets?.large_image);
-			if (a_large !== l_url) {
-				a_updateLarge(l_url);
+
+		if (a) {
+			setHasactivity(true);
+			if (a.type === 2) {
+				const l_url = getImage(a.assets?.large_image);
+				if (a_large !== l_url) {
+					a_updateLarge(l_url);
+				}
+				a_setName(a.name);
+				a_setDetails(a.details);
+				a_setState(a.state);
+				rpc_Setstart(a.timestamps.start);
+				rpc_Setend(a.timestamps.end);
+			} else {
+				const l_url = getImage(a.assets?.large_image, a.application_id, 160);
+				const s_url = getImage(a.assets?.small_image, a.application_id, 60);
+				if (a_large !== l_url) a_updateLarge(l_url);
+				if (a_small !== s_url) a_updateSmall(s_url);
+				a_setName(a.name);
+				a_setDetails(a.details);
+				a_setState(a.state);
+				rpc_Setstart(a.timestamps.start);
+				rpc_Setend(a.timestamps.end ?? null);
 			}
-			a_setName(a.name);
-			a_setDetails(a.details);
-			a_setState(a.state);
-			rpc_Setstart(a.timestamps.start);
-			rpc_Setend(a.timestamps.end);
-		} else {
-			const l_url = getImage(a.assets?.large_image, a.application_id, 160);
-			const s_url = getImage(a.assets?.small_image, a.application_id, 60);
-			if (a_large !== l_url) a_updateLarge(l_url);
-			if (a_small !== s_url) a_updateSmall(s_url);
-			a_setName(a.name);
-			a_setDetails(a.details);
-			a_setState(a.state);
-			rpc_Setstart(a.timestamps.start);
-			rpc_Setend(a.timestamps.end ?? null);
-		}
+		} else setHasactivity(false);
 		// function setRPC(timestamp);
 	}
 	setInterval(() => {
@@ -203,6 +207,7 @@ export function Discord() {
 	const [isSpotify, setIsSpotify] = useState(false);
 	const [avatar, updateAvatar] = useState<string | null>(null);
 	const [username, updateUsername] = useState<string | null>(null);
+	const [hasActivity, setHasactivity] = useState(false);
 	const [a_large, a_updateLarge] = useState<string | null>(null);
 	const [a_small, a_updateSmall] = useState<string | null>(null);
 	const [a_name, a_setName] = useState<string | null>(null);
@@ -236,52 +241,66 @@ export function Discord() {
 						</div>
 						{username && <p>{username}</p>}
 					</div>
-					<div className="border rounded-lg border-gray-400 backdrop-blur-3xl p-6 flex flex-col box-border">
-						<div className="flex space-x-4 items-center">
-							<div className="shrink-0 relative">
-								<img
-									src={a_large ?? "/fallback.jpg"}
-									width="128"
-									height="128"
-									draggable="false"
-									alt="Large image"
-									className="rounded-xl h-28 w-28"
-								/>
-
-								{a_small && (
+					{hasActivity ? (
+						<div className="border rounded-lg border-gray-400 backdrop-blur-3xl p-6 flex flex-col box-border">
+							<div className="flex space-x-4 items-center">
+								<div className="shrink-0 relative">
 									<img
-										src={a_small}
-										width="16"
-										height="16"
+										src={a_large ?? "/fallback.jpg"}
+										width="128"
+										height="128"
 										draggable="false"
-										alt="Small image"
-										className="rounded-full bg-gray-100 bg-opacity-20 h-7 right-0 bottom-0 ring-2 ring-gray-600/80 ring-opacity-20 w-7 absolute"
+										alt="Large image"
+										className="rounded-xl h-28 w-28"
 									/>
-								)}
-							</div>
-							<div className="space-y-1 w-full">
-								<h1 className="font-semibold text-lg leading-tight truncate">
-									{a_name ?? "..."}
-								</h1>
-								<h2 className="leading-tight line-clamp-2 text-xl">
-									{isSpotify ? "by " : ""}
-									{a_details ?? "..."}
-								</h2>
-								<h2 className="leading-tight line-clamp-2 text-lg">
-									{isSpotify ? "on " : ""}
-									{a_state ?? "..."}
-								</h2>
-								{a_time && (
-									<span className="leading-tight opacity-90 truncate">
-										{a_time}
-									</span>
-								)}
-								{isSpotify && rpc_Start && rpc_End && (
-									<Progress start={rpc_Start} end={rpc_End} />
-								)}
+
+									{a_small && (
+										<img
+											src={a_small}
+											width="16"
+											height="16"
+											draggable="false"
+											alt="Small image"
+											className="rounded-full bg-gray-100 bg-opacity-20 h-7 right-0 bottom-0 ring-2 ring-gray-600/80 ring-opacity-20 w-7 absolute"
+										/>
+									)}
+								</div>
+								<div className="space-y-1 w-full">
+									{a_name && (
+										<h1 className="font-semibold text-lg leading-tight truncate">
+											{a_name}
+										</h1>
+									)}
+									{a_details && (
+										<h2 className="leading-tight line-clamp-2 text-xl">
+											{isSpotify ? "by " : ""}
+											{a_details}
+										</h2>
+									)}
+									{a_state && (
+										<h2 className="leading-tight line-clamp-2 text-lg">
+											{isSpotify ? "on " : ""}
+											{a_state}
+										</h2>
+									)}
+									{a_time && (
+										<span className="leading-tight opacity-90 truncate">
+											{a_time}
+										</span>
+									)}
+									{isSpotify && rpc_Start && rpc_End && (
+										<Progress start={rpc_Start} end={rpc_End} />
+									)}
+								</div>
 							</div>
 						</div>
-					</div>
+					) : (
+						<div className="border rounded-lg border-gray-600 backdrop-blur-3xl p-6 flex flex-col box-border">
+							<div className="flex space-x-4 items-center justify-center">
+								<p className="text-gray-500 italic font-mono">No activity</p>
+							</div>
+						</div>
+					)}
 				</div>
 			) : (
 				<div className="flex flex-col gap-4 border border-gray-700 p-4 rounded-lg animate-pulse">
