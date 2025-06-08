@@ -4,6 +4,7 @@ import Layout from '../layouts/Layout.astro';
 
 import Avatar from '../assets/avatar.jpg';
 import { Cards } from '../components/Cards';
+import { Discord } from '../components/Lanyard';
 
 const Contacts = {
 	Discord: 'https://discord.com/users/760731506448138251',
@@ -62,6 +63,10 @@ const Contacts = {
 				href={Contacts.Github}
 				client:visible
 			/>
+		</div>
+		<h1 class='mt-4'>Discord</h1>
+		<div class='w-full md:w-4/12 xl:w-3/12'>
+			<Discord client:visible />
 		</div>
 	</div>
 </Layout>
