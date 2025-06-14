@@ -62,15 +62,16 @@ export const Progress: FC<ProgressProps> = ({ start, end }) => {
 		setWidth(calcWidth());
 	});
 	return (
-		<div>
+		<div className="flex flex-col">
 			<div className="rounded-lg bg-gray-200/20 h-2">
 				<div
 					className=" rounded-lg bg-white/75 h-2 transition-all"
 					style={style}
 				></div>
-				<div>
+				<div className="hidden md:block">
 					{elapsed}:{getTotal()}
 				</div>
+				<div className="block md:hidden">{elapsed}</div>
 			</div>
 		</div>
 	);

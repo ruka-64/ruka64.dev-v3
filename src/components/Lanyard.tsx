@@ -260,7 +260,7 @@ export function Discord() {
 					</div>
 					{hasActivity ? (
 						<div className="border rounded-lg border-gray-400 backdrop-blur-3xl p-6 flex flex-col box-border">
-							<div className="flex space-x-4 items-center">
+							<div className="flex space-x-4">
 								<div className="shrink-0 relative">
 									<img
 										src={a_large ?? "/fallback.jpg"}
@@ -282,28 +282,29 @@ export function Discord() {
 										/>
 									)}
 								</div>
-								<div className="space-y-1 w-full">
+								<div className="space-y-1 w-full flex flex-col overflow-hidden">
 									{a_name && (
-										<h1 className="font-semibold text-lg leading-tight truncate">
+										<h1 className="font-semibold text-lg leading-tight truncate block">
 											{a_name}
 										</h1>
 									)}
 									{a_details && (
-										<h2 className="leading-tight line-clamp-2 text-xl truncate w-auto">
+										<h2 className="leading-tight text-xl truncate w-auto block">
 											{a_details}
 										</h2>
 									)}
 									{a_state && (
-										<h2 className="leading-tight line-clamp-2 text-lg truncate w-auto">
+										<h2 className="leading-tight text-lg truncate w-auto block">
 											{isSpotify ? "by " : ""}
 											{a_state}
 										</h2>
 									)}
 									{a_time && (
-										<span className="leading-tight opacity-90 truncate">
+										<span className="leading-tight opacity-90 truncate inline-block">
 											{a_time}
 										</span>
 									)}
+
 									{isSpotify && rpc_Start && rpc_End && (
 										<Progress start={rpc_Start} end={rpc_End} />
 									)}
@@ -329,7 +330,7 @@ export function Discord() {
 					</div>
 
 					<div className="border rounded-lg border-gray-400 backdrop-blur-3xl p-6 flex flex-col box-border">
-						<div className="flex space-x-4 items-center">
+						<div className="flex space-x-4">
 							<div className="shrink-0 relative">
 								<div className="rounded-xl h-28 w-28 bg-gray-800"></div>
 
