@@ -133,7 +133,7 @@ export function Discord() {
 		updateDotstyle({
 			backgroundColor: STATUS_COLORS[discord_status],
 		});
-		const a = activities[0];
+		const a = activities.find((x) => x.name !== "Custom Status");
 		setIsSpotify(listening_to_spotify);
 
 		if (a) {
@@ -143,6 +143,7 @@ export function Discord() {
 				if (a_large !== l_url) {
 					a_updateLarge(l_url);
 				}
+				a_updateSmall(null);
 				a_setName(a.name);
 				a_setDetails(a.details);
 				a_setState(a.state);
@@ -260,7 +261,7 @@ export function Discord() {
 					{hasActivity ? (
 						<div className="border rounded-lg border-gray-400 backdrop-blur-3xl p-6 flex flex-col box-border">
 							<div className="flex space-x-4 items-center">
-								<div className="shrink-0">
+								<div className="shrink-0 relative">
 									<img
 										src={a_large ?? "/fallback.jpg"}
 										width="128"
